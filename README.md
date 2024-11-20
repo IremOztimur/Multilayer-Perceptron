@@ -9,8 +9,8 @@ guideish structure
 ## Data Preparation
 First things first, the given data is raw and should be preprocessed before being used for the training phase.
 ### To-Do:
+- [X] Encode labels as 0 (B) or 1 (M)
 - [ ] Normalize/scale features
-- [ ] Encode labels as 0 (B) or 1 (M)
 - [ ] Split the dataset into:\
 **Training set:** _Used for learning_.\
 **Validation set:** _Used to evaluate performance on unseen data_.
