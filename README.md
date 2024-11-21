@@ -11,6 +11,7 @@ First things first, the given data is raw and should be preprocessed before bein
 ### To-Do:
 - [X] Encode labels as 0 (B) or 1 (M)
 - [X] Normalize/scale features
-- [ ] Split the dataset into:\
+- [X] Drop unrelated features 
+- [X] Split the dataset into:\
 **Training set:** _Used for learning_.\
 **Validation set:** _Used to evaluate performance on unseen data_.
