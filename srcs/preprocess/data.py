@@ -31,6 +31,8 @@ def get_preprocessed_data():
     scaled_data = scaler.fit_transform(x)
     df.iloc[:, 1:] = scaled_data
     
+    df = drop_weak_correlation(df, 'diagnosis', threshold=0.1)
+
     return df
 
 def train_test_split(X, y, test_size=0.2, random_state=None):
@@ -48,6 +50,30 @@ def train_test_split(X, y, test_size=0.2, random_state=None):
     y_train, y_test = y_shuffled[:split_index], y_shuffled[split_index:]
 
     return X_train, X_test, y_train, y_test
+
+def drop_weak_correlation(df, target_column, threshold=0.1):
+    """
+    Drops columns from df that have weak correlation with the target column.
+
+    Parameters:
+    df (pd.DataFrame): The input DataFrame.
+    target_column (str): The column name of the target variable.
+    threshold (float): The minimum absolute correlation required to keep a column.
+
+    Returns:
+    pd.DataFrame: A new DataFrame with only columns that have strong correlation with the target.
+    """
+    correlation_matrix = df.corr()
+
+    target_correlation = correlation_matrix[target_column]
+    
+    weakly_correlated_features = target_correlation[abs(target_correlation) < threshold].index
+
+    df_reduced = df.drop(columns=weakly_correlated_features)
+    
+    print(f"Dropped columns with weak correlation: {list(weakly_correlated_features)}")
+    
+    return df_reduced
 
 if __name__ == '__main__':
     file_path = os.path.join(os.path.dirname(__file__), '../../data/data.csv')
