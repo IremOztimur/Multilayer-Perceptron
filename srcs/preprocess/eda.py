@@ -1,5 +1,9 @@
 import pandas as pd
 import os
+import matplotlib.pyplot as plt
+from one_hot_encoder import to_categorical
+from sklearn.preprocessing import RobustScaler
+
 
 columns = [
     'id', 'diagnosis', 
@@ -13,11 +17,19 @@ columns = [
 ]
 
 
-def get_data():
+def get_preprocessed_data():
     file_path = os.path.join(os.path.dirname(__file__), '../../data/data.csv')
     df = pd.read_csv(file_path, header=None, names=columns)
+    scaler = RobustScaler()
+    
     df = df.drop('id', axis=1)
     df["diagnosis"] = df["diagnosis"].map({'M': 1, 'B': 0})
+    
+    x = df.values[:, 1:]
+
+    scaled_data = scaler.fit_transform(x)
+    df.iloc[:, 1:] = scaled_data
+    
     return df
 
 
@@ -27,6 +39,16 @@ if __name__ == '__main__':
 
     df = df.drop('id', axis=1)
     df["diagnosis"] = df["diagnosis"].map({'M': 1, 'B': 0})
+    
+    x = df.values[:, 1:]
+    y = df['diagnosis'].values
+    y = to_categorical(y)
+    
+    for i in range(x.shape[1]):
+        plt.figure()
+        plt.hist(x[:, i], bins=30)
+        plt.title(f'Feature {i}')
+        plt.show()
     
     print("Shape: ", df.shape)
     print("*"*100)
