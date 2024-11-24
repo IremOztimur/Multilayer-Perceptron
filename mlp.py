@@ -1,7 +1,6 @@
 import pandas as pd
-from srcs.preprocess.data import get_preprocessed_data, train_test_split
-from srcs.preprocess.one_hot_encoder import to_categorical
-
+from srcs.preprocess.data import get_preprocessed_data, train_test_split, to_categorical
+import srcs.model.layer as layer
 
 if __name__ == '__main__':
     df = get_preprocessed_data()
@@ -17,5 +16,12 @@ if __name__ == '__main__':
     print("X_test shape:", X_test.shape)
     print("y_train shape:", y_train.shape)
     print("y_test shape:", y_test.shape)
+    
+    dense1 = layer.Dense(n_inputs=X_train.shape[1], n_neurons=16)
+    
+    dense1.forward(X_train)
+    
+    print(dense1.output.shape)
+    
 
 
