@@ -2,7 +2,6 @@ import pandas as pd
 import os
 import numpy as np
 import matplotlib.pyplot as plt
-from .one_hot_encoder import to_categorical
 from sklearn.preprocessing import RobustScaler
 
 
@@ -50,6 +49,24 @@ def train_test_split(X, y, test_size=0.2, random_state=None):
     y_train, y_test = y_shuffled[:split_index], y_shuffled[split_index:]
 
     return X_train, X_test, y_train, y_test
+
+def to_categorical(x, num_classes=None):
+    """ Converts a class vector (integers) to binary class matrix.
+    
+        Args:
+            x (numpy array): class vector to be converted.
+            num_classes (int): total number of classes.
+        
+        Returns:
+            A binary matrix representation of the input as a NumPy array. The class axis is placed last.
+    
+    """
+    if not num_classes:
+        num_classes = np.max(x) + 1
+    one_hot_labels = np.zeros((x.size, num_classes))
+    one_hot_labels[np.arange(x.size), x] = 1
+    
+    return one_hot_labels
 
 def drop_weak_correlation(df, target_column, threshold=0.1):
     """
