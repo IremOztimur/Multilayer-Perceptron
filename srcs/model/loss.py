@@ -22,10 +22,9 @@ class LossCategoricalCrossentropy(Loss):
         negative_log_likelihoods = -np.log(correct_confidences)
         return negative_log_likelihoods
     
-    def backward(self, dvalues, y_true):
-        samples = len(dvalues)
-        labels = len(dvalues[0])
+    def backward(self, output, y_true):
+        samples = len(output)
+        labels = len(output[0])
 
-        self.dinputs = -y_true / dvalues
+        self.dinputs = -y_true / output
         self.dinputs = self.dinputs / samples
-        print(self.dinputs)

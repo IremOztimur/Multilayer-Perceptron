@@ -26,3 +26,8 @@ class Dense(Layer):
         self.linear_output = np.dot(inputs, self.weights) + self.biases
         self.activation_function.forward(self.linear_output)
         self.output = self.activation_function.output
+
+    def backward(self, gradients):
+        self.dweights = np.dot(self.inputs.T, gradients)
+        self.dbiases = np.sum(gradients, axis=0, keepdims=True)
+        self.dinputs = np.dot(gradients, self.weights.T)

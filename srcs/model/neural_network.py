@@ -23,6 +23,15 @@ class NeuralNetwork:
             layer.forward(feed)
             feed = layer.output
         return feed
-    
+
+    def backward_propagation(self, output, y):
+        self.loss_function.backward(output, y)
+        gradients = self.loss_function.dinputs
+        
+        for layer in reversed(self.layers):
+            layer.backward(gradients)
+            gradients = layer.dinputs
+
+
     def train(self, X, y, n_epochs, batch_size):
         pass

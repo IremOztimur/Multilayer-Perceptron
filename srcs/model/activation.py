@@ -12,6 +12,11 @@ class ReLU(Activation):
         self.inputs = inputs
         self.output = np.maximum(0, inputs)
         return self
+    
+    def backward(self, gradients):
+        self.dinputs = gradients.copy()
+        self.dinputs[self.inputs <= 0] = 0
+        print(self.dinputs)
 
 class Softmax(Activation):
     def forward(self, inputs):
@@ -20,3 +25,9 @@ class Softmax(Activation):
         probabilities = exp_values / np.sum(exp_values, axis=1, keepdims=True)
         self.output = probabilities
         return self
+    
+    def backward(self, gradients, y_true):
+        samples = len(gradients)
+
+        self.dinputs = gradients - y_true
+        self.dinputs = self.dinputs / samples
