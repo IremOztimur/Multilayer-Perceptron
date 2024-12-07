@@ -1,5 +1,7 @@
 import numpy as np
 
+# NOTE implement accuracy metric in the future
+
 class Loss:
     def calculate(self, output, y):
         sample_losses = self.forward(output, y)
@@ -19,3 +21,11 @@ class LossCategoricalCrossentropy(Loss):
             
         negative_log_likelihoods = -np.log(correct_confidences)
         return negative_log_likelihoods
+    
+    def backward(self, dvalues, y_true):
+        samples = len(dvalues)
+        labels = len(dvalues[0])
+
+        self.dinputs = -y_true / dvalues
+        self.dinputs = self.dinputs / samples
+        print(self.dinputs)
