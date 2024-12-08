@@ -1,19 +1,21 @@
 import numpy as np
-from activation import ReLU, Softmax
 from abc import ABC, abstractmethod
 
 
 class Layer(ABC):
     def __init__(self, n_inputs, n_neurons, activation):
-        self.weights = 0.01 * np.random.randn(n_inputs, n_neurons)
+        self.weights = np.random.randn(n_inputs, n_neurons) * np.sqrt(2. / n_inputs)
         self.biases = np.zeros((1, n_neurons))
         self.n_inputs = n_inputs
         self.n_neurons = n_neurons
         self.activation_function = activation
-        self.activation_derivative = None
     
     @abstractmethod
     def forward(self, inputs):
+        pass
+    
+    @abstractmethod
+    def backward(self, gradients):
         pass
         
 

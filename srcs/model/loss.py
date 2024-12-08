@@ -11,7 +11,7 @@ class Loss:
 class LossCategoricalCrossentropy(Loss):
     def forward(self, y_pred, y_true):
         samples = len(y_pred)
-        
+        # print("y_pred: ", y_pred)
         y_pred_clipped = np.clip(y_pred, 1e-7, 1 - 1e-7)
         
         if len(y_true.shape) == 1:
@@ -25,6 +25,8 @@ class LossCategoricalCrossentropy(Loss):
     def backward(self, output, y_true):
         samples = len(output)
         labels = len(output[0])
-
-        self.dinputs = -y_true / output
+        
+        output_clipped = np.clip(output, 1e-7, 1 - 1e-7)
+        
+        self.dinputs = -y_true / output_clipped
         self.dinputs = self.dinputs / samples
