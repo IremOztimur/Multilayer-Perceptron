@@ -22,9 +22,9 @@ if __name__ == '__main__':
 
 
     nn = NeuralNetwork(learning_rate=0.0005)
-    nn.add(Dense(n_inputs=X_train.shape[1], n_neurons=16, activation=ReLU()))
-    nn.add(Dense(n_inputs=16, n_neurons=8, activation=Sigmoid()))
-    nn.add(Dense(n_inputs=8, n_neurons=2, activation=Softmax()))
+    nn.add(Dense(n_inputs=X_train.shape[1], n_neurons=16, activation=ReLU(), initializer='He'))
+    nn.add(Dense(n_inputs=16, n_neurons=8, activation=Sigmoid(), initializer='Xavier'))
+    nn.add(Dense(n_inputs=8, n_neurons=2, activation=Softmax(), initializer='Xavier'))
     
     print("Training...") 
     history = nn.train(X_train, y_train, n_epochs=20, batch_size=8, validation_data=(X_test, y_test), patience=3)

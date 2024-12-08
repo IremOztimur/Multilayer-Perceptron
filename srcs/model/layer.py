@@ -3,8 +3,11 @@ from abc import ABC, abstractmethod
 
 
 class Layer(ABC):
-    def __init__(self, n_inputs, n_neurons, activation):
-        self.weights = np.random.randn(n_inputs, n_neurons) * np.sqrt(2. / n_inputs)
+    def __init__(self, n_inputs, n_neurons, activation, initializer='He'):
+        if initializer == 'He':
+            self.weights = np.random.randn(n_inputs, n_neurons) * np.sqrt(2. / n_inputs)
+        elif initializer == 'Xavier':
+            self.weights = np.random.randn(n_inputs, n_neurons) * np.sqrt(1. / n_inputs)
         self.biases = np.zeros((1, n_neurons))
         self.n_inputs = n_inputs
         self.n_neurons = n_neurons
@@ -20,8 +23,8 @@ class Layer(ABC):
         
 
 class Dense(Layer):
-    def __init__(self, n_inputs, n_neurons, activation):
-        super().__init__(n_inputs, n_neurons, activation)
+    def __init__(self, n_inputs, n_neurons, activation, initializer):
+        super().__init__(n_inputs, n_neurons, activation, initializer)
         
     def forward(self, inputs):
         self.inputs = inputs
