@@ -5,7 +5,8 @@ class Activation(ABC):
     @abstractmethod
     def forward(self, inputs):
         pass
-
+    def backward(self, gradients):
+        pass
 
 class ReLU(Activation):
     def forward(self, inputs):
@@ -21,6 +22,7 @@ class ReLU(Activation):
 class Softmax(Activation):
     def forward(self, inputs):
         # Subtract the max value from each input for numerical stability
+        self.inputs = inputs
         exp_values = np.exp(inputs - np.max(inputs, axis=1, keepdims=True))
         probabilities = exp_values / np.sum(exp_values, axis=1, keepdims=True)
         self.output = probabilities
@@ -31,3 +33,13 @@ class Softmax(Activation):
 
         self.dinputs = gradients - y_true
         self.dinputs = self.dinputs / samples
+        
+
+class Sigmoid(Activation):
+    def forward(self, inputs):
+        self.inputs = inputs
+        self.output = 1 / (1 + np.exp(-inputs))
+        return self
+    
+    def backward(self, gradients):
+        self.dinputs = gradients * (1 - self.output) * self.output
