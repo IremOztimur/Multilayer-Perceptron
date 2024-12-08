@@ -38,6 +38,7 @@ class Softmax(Activation):
 class Sigmoid(Activation):
     def forward(self, inputs):
         self.inputs = inputs
+        self.inputs = np.clip(inputs, -500, 500)
         self.output = 1 / (1 + np.exp(-inputs))
         return self
     
