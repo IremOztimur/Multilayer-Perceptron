@@ -3,11 +3,13 @@ DEPO_DIR = ./depo
 PRED_DIR = ./predictions
 
 clean:
-	@rm -f $(DATA_DIR)/*.csv 
-	@rm -f $(DEPO_DIR)/*.npy
-	@rm -f $(PRED_DIR)/*.csv 
+	@rm -fr $(DATA_DIR)
+	@rm -fr $(DEPO_DIR)
+	@rm -fr $(PRED_DIR)
+	@find .. -type d -name "__pycache__" -exec rm -rf {} +
 	@echo "\033[91mDeleted all CSV files in the data folder.\033[0m"
 	@echo "\033[91mDeleted all NPY files in the depo folder.\033[0m"
+	@echo "\033[91mDeleted all __pycache__ directories.\033[0m"
 
 create:
 	@mkdir -p $(DATA_DIR)
