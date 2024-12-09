@@ -44,5 +44,10 @@ if __name__ == '__main__':
     # plot_step_loss(history['step_loss'])
     
     nn.save_model('depo/saved_model.npy')
+    nn.load_model('depo/saved_model.npy')
+    
+    new_nn_predictions = nn.predict(X_test)
+    test_accuracy = np.mean(new_nn_predictions == np.argmax(y_test, axis=1))
 
+    print(f"Test Accuracy: {test_accuracy:.2f}")
 

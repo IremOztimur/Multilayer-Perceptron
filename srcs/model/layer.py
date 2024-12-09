@@ -12,6 +12,7 @@ class Layer(ABC):
         self.n_inputs = n_inputs
         self.n_neurons = n_neurons
         self.activation_function = activation
+        self.initializer = initializer
     
     @abstractmethod
     def forward(self, inputs):

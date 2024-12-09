@@ -1,6 +1,7 @@
 from model.layer import Dense
 from model.loss import LossCategoricalCrossEntropy
 from model.metrics import calculate_accuracy
+from model.activation import ReLU, Sigmoid, Softmax 
 import numpy as np
 
 class NeuralNetwork:
@@ -122,7 +123,8 @@ class NeuralNetwork:
             model_data["topology"].append({
                 "n_inputs": layer.n_inputs,
                 "n_neurons": layer.n_neurons,
-                "activation": type(layer.activation_function).__name__
+                "activation": type(layer.activation_function).__name__,
+                "initializer": layer.initializer
             })
 
             model_data["parameters"].append({
@@ -131,4 +133,25 @@ class NeuralNetwork:
             })
 
         np.save(file_path, model_data, allow_pickle=True)
-        print(f"Model saved to {file_path}")
+        print(f"\033[94m> model saved to {file_path}\033[0m")
+
+    
+    def load_model(self, file_path):
+        model_data = np.load(file_path, allow_pickle=True).item()
+
+        self.layers = []
+
+        for layer_data, param_data in zip(model_data["topology"], model_data["parameters"]):
+            activation_function = globals()[layer_data["activation"]]()
+            layer = Dense(
+                n_inputs=layer_data["n_inputs"],
+                n_neurons=layer_data["n_neurons"],
+                activation=activation_function,
+                initializer=layer_data["initializer"]
+            )
+
+            layer.weights = param_data["weights"]
+            layer.biases = param_data["biases"]
+
+            self.layers.append(layer)
+        print(f"\033[95m> model loaded from {file_path}\033[0m")
