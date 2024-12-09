@@ -17,9 +17,24 @@ columns = [
 ]
 
 
-def get_preprocessed_data():
-    file_path = os.path.join(os.path.dirname(__file__), '../../data/data.csv')
+def preprocess_data_from_path(file_path):
     df = pd.read_csv(file_path, header=None, names=columns)
+    scaler = StandardScaler()
+    
+    df = df.drop('id', axis=1)
+    df["diagnosis"] = df["diagnosis"].map({'M': 1, 'B': 0})
+    
+    x = df.values[:, 1:]
+
+    scaled_data = scaler.fit_transform(x)
+    df.iloc[:, 1:] = scaled_data
+    
+    df = drop_weak_correlation(df, 'diagnosis', threshold=0.1)
+
+    return df
+
+def preprocess_data_from_df(df):
+    df.columns = columns
     scaler = StandardScaler()
     
     df = df.drop('id', axis=1)
@@ -61,6 +76,7 @@ def to_categorical(x, num_classes=None):
             A binary matrix representation of the input as a NumPy array. The class axis is placed last.
     
     """
+    x = x.astype(int)  # Ensure x is integer
     if not num_classes:
         num_classes = np.max(x) + 1
     one_hot_labels = np.zeros((x.size, num_classes))
@@ -119,6 +135,5 @@ if __name__ == '__main__':
     print("*"*100)
     print(df.isna().any().any())
     
-    df_1 = get_preprocessed_data()
+    df_1 = preprocess_data_from_path('../../data/data.csv')
     print(df_1.head())
-    
