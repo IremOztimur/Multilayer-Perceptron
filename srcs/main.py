@@ -3,13 +3,13 @@ from model.layer import Dense
 from model.activation import ReLU, Softmax, Sigmoid
 from model.loss import LossCategoricalCrossEntropy, LossBinaryCrossEntropy
 import numpy as np
-from model.preprocess import get_preprocessed_data, train_test_split, to_categorical
+from model.preprocess import get_preprocessed_data_by_path, train_test_split, to_categorical
 from visualizer import plot_metrics, plot_step_loss
 import matplotlib.pyplot as plt
 
 
 if __name__ == '__main__':
-    df = get_preprocessed_data()
+    df = get_preprocessed_data_by_path('../data/data.csv')
     
     X = df.values[:, 1:]
     y = df['diagnosis'].values

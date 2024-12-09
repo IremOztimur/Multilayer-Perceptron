@@ -131,6 +131,7 @@ class NeuralNetwork:
                 "weights": layer.weights,
                 "biases": layer.biases
             })
+        model_data["learning_rate"] = self.learning_rate
 
         np.save(file_path, model_data, allow_pickle=True)
         print(f"\033[94m> model saved to {file_path}\033[0m")
@@ -155,3 +156,4 @@ class NeuralNetwork:
 
             self.layers.append(layer)
         print(f"\033[95m> model loaded from {file_path}\033[0m")
+        return self
