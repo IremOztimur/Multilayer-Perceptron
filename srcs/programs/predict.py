@@ -59,7 +59,7 @@ def main():
     y_true = np.argmax(y_test, axis=1)
     accuracy = np.mean(predictions == y_true)
     print("*"*29)
-    print(f"Accuracy on test data: {accuracy:.2f}")
+    print(f"\033[92m> Accuracy\033[0m on test data: {accuracy:.2f}")
     print("*"*29)
 
 if __name__ == "__main__":

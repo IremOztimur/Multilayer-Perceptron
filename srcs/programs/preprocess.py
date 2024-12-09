@@ -10,7 +10,7 @@ def save_to_csv(X, y, file_path):
     """Utility function to save a dataset to a CSV file."""
     data = np.hstack((X, y.reshape(-1, 1))) 
     pd.DataFrame(data).to_csv(file_path, index=False)
-    print(f"Saved dataset to {file_path}")
+    print(f"\033[92m> saved\033[0m dataset to {file_path}")
 
 def main():
     parser = argparse.ArgumentParser(description="Data Preprocessing Program")
