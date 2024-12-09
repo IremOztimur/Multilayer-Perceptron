@@ -1,5 +1,5 @@
 from model.layer import Dense
-from model.loss import LossCategoricalCrossentropy
+from model.loss import LossCategoricalCrossEntropy
 from model.metrics import calculate_accuracy
 import numpy as np
 
@@ -7,10 +7,10 @@ class NeuralNetwork:
     layers: Dense
     learning_rate: float
     
-    def __init__(self, learning_rate=0.01):
+    def __init__(self, learning_rate=0.01, loss_function=LossCategoricalCrossEntropy()):
         self.layers = []
         self.learning_rate = learning_rate
-        self.loss_function = LossCategoricalCrossentropy() # BinaryCrossentropy() will be replaced
+        self.loss_function = loss_function
         
     def add(self, layer):
         if not isinstance(layer, Dense):

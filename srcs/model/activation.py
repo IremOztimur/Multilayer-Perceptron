@@ -17,7 +17,6 @@ class ReLU(Activation):
     def backward(self, gradients):
         self.dinputs = gradients.copy()
         self.dinputs[self.inputs <= 0] = 0
-        print(self.dinputs)
 
 class Softmax(Activation):
     def forward(self, inputs):

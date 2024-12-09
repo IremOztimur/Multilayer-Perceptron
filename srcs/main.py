@@ -1,6 +1,7 @@
 from model.neural_network import NeuralNetwork
 from model.layer import Dense
 from model.activation import ReLU, Softmax, Sigmoid
+from model.loss import LossCategoricalCrossEntropy, LossBinaryCrossEntropy
 import numpy as np
 from model.preprocess import get_preprocessed_data, train_test_split, to_categorical
 from visualizer import plot_metrics, plot_step_loss
@@ -21,7 +22,7 @@ if __name__ == '__main__':
     print("y_test shape:", y_test.shape)
 
 
-    nn = NeuralNetwork(learning_rate=0.0005)
+    nn = NeuralNetwork(learning_rate=0.0005, loss_function=LossCategoricalCrossEntropy())
     nn.add(Dense(n_inputs=X_train.shape[1], n_neurons=16, activation=ReLU(), initializer='He'))
     nn.add(Dense(n_inputs=16, n_neurons=8, activation=Sigmoid(), initializer='Xavier'))
     nn.add(Dense(n_inputs=8, n_neurons=2, activation=Softmax(), initializer='Xavier'))
