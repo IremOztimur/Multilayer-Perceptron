@@ -41,6 +41,8 @@ if __name__ == '__main__':
     print("*"*21)
     
     plot_metrics(history)
-    plot_step_loss(history['step_loss'])
+    # plot_step_loss(history['step_loss'])
+    
+    nn.save_model('depo/saved_model.npy')
 
 

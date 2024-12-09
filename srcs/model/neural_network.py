@@ -111,3 +111,24 @@ class NeuralNetwork:
     def predict(self, X):
         predictions = self.forward_propagation(X)
         return np.argmax(predictions, axis=1)
+    
+    def save_model(self, file_path):
+        model_data = {
+            "topology": [], 
+            "parameters": []
+        }
+
+        for layer in self.layers:
+            model_data["topology"].append({
+                "n_inputs": layer.n_inputs,
+                "n_neurons": layer.n_neurons,
+                "activation": type(layer.activation_function).__name__
+            })
+
+            model_data["parameters"].append({
+                "weights": layer.weights,
+                "biases": layer.biases
+            })
+
+        np.save(file_path, model_data, allow_pickle=True)
+        print(f"Model saved to {file_path}")
