@@ -6,12 +6,11 @@ import numpy as np
 
 class NeuralNetwork:
     layers: Dense
-    learning_rate: float
     
-    def __init__(self, learning_rate=0.01, loss_function=LossCategoricalCrossEntropy()):
+    def __init__(self, loss_function=LossCategoricalCrossEntropy()):
         self.layers = []
-        self.learning_rate = learning_rate
         self.loss_function = loss_function
+        self.optimizer = None
         
     def add(self, layer):
         if not isinstance(layer, Dense):
@@ -34,10 +33,15 @@ class NeuralNetwork:
             layer.backward(gradients)
             gradients = layer.dinputs
 
+    # def update_params(self):
+    #     for layer in self.layers:
+    #         layer.weights += -self.learning_rate * layer.dweights
+    #         layer.biases += -self.learning_rate * layer.dbiases
     def update_params(self):
+        self.optimizer.pre_update_params()
         for layer in self.layers:
-            layer.weights += -self.learning_rate * layer.dweights
-            layer.biases += -self.learning_rate * layer.dbiases
+            self.optimizer.update_params(layer)
+        self.optimizer.post_update_params()
 
     def train(self, X, y, n_epochs, batch_size, validation_data=None, patience=3):
         n_samples = X.shape[0]
@@ -131,7 +135,7 @@ class NeuralNetwork:
                 "weights": layer.weights,
                 "biases": layer.biases
             })
-        model_data["learning_rate"] = self.learning_rate
+        model_data["learning_rate"] = self.optimizer.learning_rate
 
         np.save(file_path, model_data, allow_pickle=True)
         print(f"\033[94m> model saved to {file_path}\033[0m")

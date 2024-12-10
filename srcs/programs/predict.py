@@ -12,7 +12,7 @@ from model.preprocess import to_categorical
 def load_model(file_path):
     """Load the trained model from a .npy file."""
     model_data = np.load(file_path, allow_pickle=True).item()
-    nn = NeuralNetwork(learning_rate=model_data['learning_rate'])
+    nn = NeuralNetwork()
     for layer_data, param_data in zip(model_data["topology"], model_data["parameters"]):
         activation_function = globals()[layer_data["activation"]]()
         layer = Dense(

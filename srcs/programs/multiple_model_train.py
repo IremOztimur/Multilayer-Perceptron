@@ -12,6 +12,7 @@ from model.activation import ReLU, Softmax, Sigmoid
 from model.loss import LossBinaryCrossEntropy, LossCategoricalCrossEntropy
 from visualizer import plot_metrics, plot_learning_curves
 from model.preprocess import to_categorical
+from model.optimizers import SGD, Adam
 
 def load_data(file_path):
     """Load dataset from a CSV file."""
@@ -34,7 +35,8 @@ def train_and_save_model(X_train, y_train, X_valid, y_valid, model_name, params)
     Returns:
         A dictionary with training and validation metrics.
     """
-    nn = NeuralNetwork(learning_rate=params['learning_rate'], loss_function=LossCategoricalCrossEntropy())
+    nn = NeuralNetwork()
+    nn.optimizer = SGD(learning_rate=params['learning_rate'], momentum=0.8, decay=1e-4)
     nn.add(Dense(n_inputs=X_train.shape[1], n_neurons=16, activation=ReLU(), initializer='He'))
     nn.add(Dense(n_inputs=16, n_neurons=8, activation=Sigmoid(), initializer='Xavier'))
     nn.add(Dense(n_inputs=8, n_neurons=2, activation=Softmax(), initializer='Xavier'))

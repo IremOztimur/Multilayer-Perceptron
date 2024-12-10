@@ -10,6 +10,7 @@ from model.activation import ReLU, Softmax, Sigmoid
 from model.loss import LossBinaryCrossEntropy, LossCategoricalCrossEntropy
 from visualizer import plot_metrics
 from model.preprocess import to_categorical
+from model.optimizers import Adam, SGD
 
 def load_data(file_path):
     """Load dataset from a CSV file."""
@@ -32,7 +33,8 @@ def main():
     X_valid, y_valid = load_data(args.valid)
 
 
-    nn = NeuralNetwork(learning_rate=args.learning_rate, loss_function=LossCategoricalCrossEntropy())
+    nn = NeuralNetwork(loss_function=LossCategoricalCrossEntropy())
+    nn.optimizer = SGD(learning_rate=args.learning_rate, momentum=0.8, decay=1e-4)
     nn.add(Dense(n_inputs=X_train.shape[1], n_neurons=16, activation=ReLU(), initializer='He'))
     nn.add(Dense(n_inputs=16, n_neurons=8, activation=Sigmoid(), initializer='Xavier'))
     nn.add(Dense(n_inputs=8, n_neurons=2, activation=Softmax(), initializer='Xavier'))
