@@ -16,3 +16,10 @@ create:
 	@mkdir -p $(DEPO_DIR)
 	@mkdir -p $(PRED_DIR)
 	@echo "\033[92mCreated data, depo and predictions folders.\033[0m"
+
+
+virtual:
+	@python3.11 -m venv myenv && \
+	source myenv/bin/activate && \
+	pip install -r ../../requirements.txt && \
+	echo "\033[92mCreated virtual environment.\033[0m"
