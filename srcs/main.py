@@ -6,7 +6,7 @@ import numpy as np
 from model.preprocess import preprocess_data_from_path, train_test_split, to_categorical
 from visualizer import plot_metrics, plot_step_loss
 import matplotlib.pyplot as plt
-from model.optimizers import Adam, SGD
+from model.optimizers import Adam, SGD, RMSProp
 
 def main():
     df = preprocess_data_from_path('../data/data.csv')
@@ -23,9 +23,10 @@ def main():
 
 
     nn = NeuralNetwork()
-    nn.optimizer = SGD(learning_rate=0.0001, momentum=0.8, decay=1e-4)
+    # nn.optimizer = SGD(learning_rate=0.0001, momentum=0.7, decay=1e-4)
     # nn.optimizer = SGD(learning_rate=0.0005) # vanillia SGD
     # nn.optimizer = Adam(learning_rate=0.0001, decay=1e-4)
+    nn.optimizer = RMSProp(learning_rate=0.001, rho=0.9, epsilon=1e-7, decay=0.01)
     nn.add(Dense(n_inputs=X_train.shape[1], n_neurons=16, activation=ReLU(), initializer='He'))
     nn.add(Dense(n_inputs=16, n_neurons=8, activation=Sigmoid(), initializer='Xavier'))
     nn.add(Dense(n_inputs=8, n_neurons=2, activation=Softmax(), initializer='Xavier'))
