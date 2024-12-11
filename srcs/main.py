@@ -7,6 +7,7 @@ from model.preprocess import preprocess_data_from_path, train_test_split, to_cat
 from visualizer import plot_metrics, plot_step_loss
 import matplotlib.pyplot as plt
 from model.optimizers import Adam, SGD, RMSProp
+from model.metrics import calculate_recall, calculate_precision, calculate_f1
 
 def main():
     df = preprocess_data_from_path('../data/data.csv')
@@ -23,10 +24,10 @@ def main():
 
 
     nn = NeuralNetwork()
-    # nn.optimizer = SGD(learning_rate=0.0001, momentum=0.7, decay=1e-4)
+    nn.optimizer = SGD(learning_rate=0.0001, momentum=0.9, decay=1e-4)
     # nn.optimizer = SGD(learning_rate=0.0005) # vanillia SGD
-    # nn.optimizer = Adam(learning_rate=0.0001, decay=1e-4)
-    nn.optimizer = RMSProp(learning_rate=0.001, rho=0.9, epsilon=1e-7, decay=0.01)
+    # nn.optimizer = Adam(learning_rate=0.0003, decay=1e-3)
+    # nn.optimizer = RMSProp(learning_rate=0.001, rho=0.9, epsilon=1e-7, decay=0.01)
     nn.add(Dense(n_inputs=X_train.shape[1], n_neurons=16, activation=ReLU(), initializer='He'))
     nn.add(Dense(n_inputs=16, n_neurons=8, activation=Sigmoid(), initializer='Xavier'))
     nn.add(Dense(n_inputs=8, n_neurons=2, activation=Softmax(), initializer='Xavier'))
@@ -40,8 +41,14 @@ def main():
     print(f"Predicted labels: {y_pred}")
     
     test_accuracy = np.mean(y_pred == np.argmax(y_test, axis=1))
+    recall = calculate_recall(y_pred, y_test)
+    precision = calculate_precision(y_pred, y_test)
+    f1 = calculate_f1(y_pred, y_test)
     print("*"*21)
     print(f"Test Accuracy: {test_accuracy:.2f}")
+    print(f"Precision: {precision:.2f}")
+    print(f"Recall: {recall:.2f}")
+    print(f"F1 Score: {f1:.2f}")
     print("*"*21)
     
     plot_metrics(history)
