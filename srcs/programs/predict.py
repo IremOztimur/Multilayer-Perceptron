@@ -8,7 +8,7 @@ from model.neural_network import NeuralNetwork
 from model.layer import Dense
 from model.activation import ReLU, Softmax, Sigmoid
 from model.preprocess import to_categorical
-from model.metrics import calculate_recall, calculate_precision, calculate_f1
+from model.metrics import calculate_recall, calculate_precision, calculate_f1, confusion_matrix
 
 def load_model(file_path):
     """Load the trained model from a .npy file."""
@@ -69,6 +69,8 @@ def main():
     print(f"\033[92m> Recall\033[0m on test data: {recall:.2f}")
     print(f"\033[92m> F1 Score\033[0m on test data: {f1:.2f}")
     print("*"*29)
+    
+    confusion_matrix(predictions, y_true)
 
 if __name__ == "__main__":
     main()

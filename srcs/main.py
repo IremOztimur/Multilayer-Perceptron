@@ -7,7 +7,7 @@ from model.preprocess import preprocess_data_from_path, train_test_split, to_cat
 from visualizer import plot_metrics, plot_step_loss
 import matplotlib.pyplot as plt
 from model.optimizers import Adam, SGD, RMSProp
-from model.metrics import calculate_recall, calculate_precision, calculate_f1
+from model.metrics import calculate_recall, calculate_precision, calculate_f1, confusion_matrix
 
 def main():
     df = preprocess_data_from_path('../data/data.csv')
@@ -52,16 +52,9 @@ def main():
     print(f"F1 Score: {f1:.2f}")
     print("*"*21)
     
+    confusion_matrix(y_pred, y_true)
+    
     plot_metrics(history)
-    # plot_step_loss(history['step_loss'])
-    
-    # nn.save_model('depo/saved_model.npy')
-    # nn.load_model('depo/saved_model.npy')
-    
-    # new_nn_predictions = nn.predict(X_test)
-    # test_accuracy = np.mean(new_nn_predictions == np.argmax(y_test, axis=1))
-
-    # print(f"Test Accuracy: {test_accuracy:.2f}")
 
 if __name__ == '__main__':
     main()
