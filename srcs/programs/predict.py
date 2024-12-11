@@ -8,6 +8,7 @@ from model.neural_network import NeuralNetwork
 from model.layer import Dense
 from model.activation import ReLU, Softmax, Sigmoid
 from model.preprocess import to_categorical
+from model.metrics import calculate_recall, calculate_precision, calculate_f1
 
 def load_model(file_path):
     """Load the trained model from a .npy file."""
@@ -58,8 +59,15 @@ def main():
 
     y_true = np.argmax(y_test, axis=1)
     accuracy = np.mean(predictions == y_true)
+    recall = calculate_recall(predictions, y_true)
+    precision = calculate_precision(predictions, y_true)
+    f1 = calculate_f1(predictions, y_true)
+    
     print("*"*29)
     print(f"\033[92m> Accuracy\033[0m on test data: {accuracy:.2f}")
+    print(f"\033[92m> Precision\033[0m on test data: {precision:.2f}")
+    print(f"\033[92m> Recall\033[0m on test data: {recall:.2f}")
+    print(f"\033[92m> F1 Score\033[0m on test data: {f1:.2f}")
     print("*"*29)
 
 if __name__ == "__main__":

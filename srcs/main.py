@@ -41,9 +41,10 @@ def main():
     print(f"Predicted labels: {y_pred}")
     
     test_accuracy = np.mean(y_pred == np.argmax(y_test, axis=1))
-    recall = calculate_recall(y_pred, y_test)
-    precision = calculate_precision(y_pred, y_test)
-    f1 = calculate_f1(y_pred, y_test)
+    y_true = np.argmax(y_test, axis=1)
+    recall = calculate_recall(y_pred, y_true)
+    precision = calculate_precision(y_pred, y_true)
+    f1 = calculate_f1(y_pred, y_true)
     print("*"*21)
     print(f"Test Accuracy: {test_accuracy:.2f}")
     print(f"Precision: {precision:.2f}")

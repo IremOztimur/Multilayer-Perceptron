@@ -16,8 +16,6 @@ def calculate_recall(y_pred, y_test):
     Returns:
         float: Recall value.
     """
-    y_test = np.argmax(y_test, axis=1)
-
     # True Positives (TP) and False Negatives (FN)
     tp = np.sum((y_pred == 1) & (y_test == 1))
     fn = np.sum((y_pred == 0) & (y_test == 1))
@@ -34,8 +32,6 @@ def calculate_precision(y_pred, y_test):
     Returns:
         float: Precision value.
     """
-    y_test = np.argmax(y_test, axis=1)
-
     # True Positives (TP) and False Positives (FP)
     tp = np.sum((y_pred == 1) & (y_test == 1))
     fp = np.sum((y_pred == 1) & (y_test == 0))
