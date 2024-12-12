@@ -36,7 +36,7 @@ def train_and_save_model(X_train, y_train, X_valid, y_valid, model_name, params)
         A dictionary with training and validation metrics.
     """
     nn = NeuralNetwork()
-    nn.optimizer = SGD(learning_rate=params['learning_rate'], momentum=0.8, decay=1e-4)
+    nn.optimizer = SGD(learning_rate=params['learning_rate'], momentum=0.9, decay=1e-4)
     nn.add(Dense(n_inputs=X_train.shape[1], n_neurons=16, activation=ReLU(), initializer='He'))
     nn.add(Dense(n_inputs=16, n_neurons=8, activation=Sigmoid(), initializer='Xavier'))
     nn.add(Dense(n_inputs=8, n_neurons=2, activation=Softmax(), initializer='Xavier'))

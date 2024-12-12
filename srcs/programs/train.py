@@ -27,6 +27,7 @@ def main():
     parser.add_argument("--epochs", type=int, required=True, help="Number of training epochs.")
     parser.add_argument("--batch_size", type=int, required=True, help="Batch size for training.")
     parser.add_argument("--learning_rate", type=float, required=True, help="Learning rate for training.")
+    parser.add_argument("--model_name", type=str, required=True, help="The name of the model")
     args = parser.parse_args()
 
     X_train, y_train = load_data(args.train)
@@ -34,7 +35,8 @@ def main():
 
 
     nn = NeuralNetwork(loss_function=LossCategoricalCrossEntropy())
-    nn.optimizer = SGD(learning_rate=args.learning_rate, momentum=0.8, decay=1e-4)
+    nn.optimizer = SGD(learning_rate=args.learning_rate, momentum=0.9, decay=1e-4)
+    # nn.optimizer = Adam(learning_rate=args.learning_rate, decay=1e-3)
     nn.add(Dense(n_inputs=X_train.shape[1], n_neurons=16, activation=ReLU(), initializer='He'))
     nn.add(Dense(n_inputs=16, n_neurons=8, activation=Sigmoid(), initializer='Xavier'))
     nn.add(Dense(n_inputs=8, n_neurons=2, activation=Softmax(), initializer='Xavier'))
@@ -48,7 +50,7 @@ def main():
         patience=3
     )
 
-    model_path = "depo/saved_model.npy"
+    model_path = f"depo/{args.model_name}.npy"
     nn.save_model(model_path)
 
     plot_metrics(history)

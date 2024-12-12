@@ -38,7 +38,7 @@ def main():
     print("Testing...") 
     
     y_pred = nn.predict(X_test)
-    print(f"Predicted labels: {y_pred}")
+    # print(f"Predicted labels: {y_pred}")
     
     test_accuracy = np.mean(y_pred == np.argmax(y_test, axis=1))
     y_true = np.argmax(y_test, axis=1)
@@ -52,9 +52,9 @@ def main():
     print(f"F1 Score: {f1:.2f}")
     print("*"*21)
     
-    confusion_matrix(y_pred, y_true)
-    
     plot_metrics(history)
+    
+    confusion_matrix(y_pred, y_true)
 
 if __name__ == '__main__':
     main()

@@ -1,9 +1,9 @@
 import argparse
 import pandas as pd
+import numpy as np
 import sys
 import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-import numpy as np
 from model.preprocess import preprocess_data_from_df, train_test_split
 
 def save_to_csv(X, y, file_path):

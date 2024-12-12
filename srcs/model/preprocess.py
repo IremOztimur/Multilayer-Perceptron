@@ -2,7 +2,6 @@ import pandas as pd
 import os
 import numpy as np
 import matplotlib.pyplot as plt
-from sklearn.preprocessing import StandardScaler, MinMaxScaler, RobustScaler
 
 
 columns = [
@@ -16,10 +15,22 @@ columns = [
     'fractal_dimension_worst'
 ]
 
+class CustomStandardScaler:
+    def fit(self, X):
+        self.mean = np.mean(X, axis=0)
+        self.std = np.std(X, axis=0)
+        return self
+    
+    def transform(self, X):
+        return (X - self.mean) / self.std
+    
+    def fit_transform(self, X):
+        return self.fit(X).transform(X)
+    
 
 def preprocess_data_from_path(file_path):
     df = pd.read_csv(file_path, header=None, names=columns)
-    scaler = StandardScaler()
+    scaler = CustomStandardScaler()
     
     df = df.drop('id', axis=1)
     df["diagnosis"] = df["diagnosis"].map({'M': 1, 'B': 0})
@@ -35,7 +46,7 @@ def preprocess_data_from_path(file_path):
 
 def preprocess_data_from_df(df):
     df.columns = columns
-    scaler = StandardScaler()
+    scaler = CustomStandardScaler()
     
     df = df.drop('id', axis=1)
     df["diagnosis"] = df["diagnosis"].map({'M': 1, 'B': 0})
@@ -76,7 +87,7 @@ def to_categorical(x, num_classes=None):
             A binary matrix representation of the input as a NumPy array. The class axis is placed last.
     
     """
-    x = x.astype(int)  # Ensure x is integer
+    x = x.astype(int)
     if not num_classes:
         num_classes = np.max(x) + 1
     one_hot_labels = np.zeros((x.size, num_classes))
@@ -119,11 +130,11 @@ if __name__ == '__main__':
     y = df['diagnosis'].values
     y = to_categorical(y)
     
-    # for i in range(x.shape[1]):
-    #     plt.figure()
-    #     plt.hist(x[:, i], bins=30)
-    #     plt.title(f'Feature {i}')
-    #     plt.show()
+    for i in range(x.shape[1]):
+        plt.figure()
+        plt.hist(x[:, i], bins=30)
+        plt.title(f'Feature {i}')
+        plt.show()
     
     print("Shape: ", df.shape)
     print("*"*100)

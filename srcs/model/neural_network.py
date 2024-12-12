@@ -33,10 +33,6 @@ class NeuralNetwork:
             layer.backward(gradients)
             gradients = layer.dinputs
 
-    # def update_params(self):
-    #     for layer in self.layers:
-    #         layer.weights += -self.learning_rate * layer.dweights
-    #         layer.biases += -self.learning_rate * layer.dbiases
     def update_params(self):
         self.optimizer.pre_update_params()
         for layer in self.layers:
