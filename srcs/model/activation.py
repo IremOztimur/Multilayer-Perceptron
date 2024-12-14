@@ -28,11 +28,10 @@ class Softmax(Activation):
         return self
     
     def backward(self, gradients, y_true):
-        samples = len(gradients)
-
-        self.dinputs = gradients - y_true
+        samples = len(y_true)
+        self.dinputs = self.output
+        self.dinputs[range(samples), np.argmax(y_true, axis=1)] -= 1
         self.dinputs = self.dinputs / samples
-        
 
 class Sigmoid(Activation):
     def forward(self, inputs):

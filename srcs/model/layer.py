@@ -1,5 +1,6 @@
 import numpy as np
 from abc import ABC, abstractmethod
+from model.activation import Softmax
 
 
 class Layer(ABC):
@@ -33,7 +34,11 @@ class Dense(Layer):
         self.activation_function.forward(self.linear_output)
         self.output = self.activation_function.output
 
-    def backward(self, gradients):
-        self.dweights = np.dot(self.inputs.T, gradients)
-        self.dbiases = np.sum(gradients, axis=0, keepdims=True)
-        self.dinputs = np.dot(gradients, self.weights.T)
+    def backward(self, gradients, y_true=None):
+        if isinstance(self.activation_function, Softmax) and y_true is not None:
+            self.activation_function.backward(gradients, y_true)
+        else:
+            self.activation_function.backward(gradients)
+        self.dweights = np.dot(self.inputs.T, self.activation_function.dinputs)
+        self.dbiases = np.sum(self.activation_function.dinputs, axis=0, keepdims=True)
+        self.dinputs = np.dot(self.activation_function.dinputs, self.weights.T)

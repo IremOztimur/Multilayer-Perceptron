@@ -24,13 +24,13 @@ def main():
 
 
     nn = NeuralNetwork()
-    nn.optimizer = SGD(learning_rate=0.0001, momentum=0.9, decay=1e-4)
+    nn.optimizer = SGD(learning_rate=0.005, momentum=0.9, decay=1e-4)
     # nn.optimizer = SGD(learning_rate=0.0005) # vanillia SGD
     # nn.optimizer = Adam(learning_rate=0.0003, decay=1e-3)
     # nn.optimizer = RMSProp(learning_rate=0.001, rho=0.9, epsilon=1e-7, decay=0.01)
     nn.add(Dense(n_inputs=X_train.shape[1], n_neurons=16, activation=ReLU(), initializer='He'))
-    nn.add(Dense(n_inputs=16, n_neurons=8, activation=Sigmoid(), initializer='Xavier'))
-    nn.add(Dense(n_inputs=8, n_neurons=2, activation=Softmax(), initializer='Xavier'))
+    nn.add(Dense(n_inputs=16, n_neurons=16, activation=Sigmoid(), initializer='Xavier'))
+    nn.add(Dense(n_inputs=16, n_neurons=2, activation=Softmax(), initializer='Xavier'))
     
     print("Training...") 
     history = nn.train(X_train, y_train, n_epochs=50, batch_size=16, validation_data=(X_test, y_test), patience=3)
@@ -38,7 +38,7 @@ def main():
     print("Testing...") 
     
     y_pred = nn.predict(X_test)
-    # print(f"Predicted labels: {y_pred}")
+    print(f"Predicted labels: {y_pred}")
     
     test_accuracy = np.mean(y_pred == np.argmax(y_test, axis=1))
     y_true = np.argmax(y_test, axis=1)

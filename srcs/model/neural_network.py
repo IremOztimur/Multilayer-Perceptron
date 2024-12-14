@@ -30,8 +30,12 @@ class NeuralNetwork:
         gradients = self.loss_function.dinputs
         
         for layer in reversed(self.layers):
-            layer.backward(gradients)
-            gradients = layer.dinputs
+            if isinstance(layer.activation_function, Softmax):
+                layer.backward(gradients, y)
+                gradients = layer.dinputs
+            else:
+                layer.backward(gradients)
+                gradients = layer.dinputs
 
     def update_params(self):
         self.optimizer.pre_update_params()
