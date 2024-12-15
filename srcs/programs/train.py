@@ -53,6 +53,8 @@ def main():
     model_path = f"depo/{args.model_name}.npy"
     nn.save_model(model_path)
 
+    print(f"Train Loss: {history['train_loss'][-1]:.4f}")
+    
     plot_metrics(history)
 
 if __name__ == "__main__":
