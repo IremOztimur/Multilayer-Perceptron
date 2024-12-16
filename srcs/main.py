@@ -23,7 +23,7 @@ def main():
     print("y_test shape:", y_test.shape)
 
 
-    nn = NeuralNetwork()
+    nn = NeuralNetwork(loss_function=LossBinaryCrossEntropy())
     nn.optimizer = SGD(learning_rate=0.005, momentum=0.9, decay=1e-3)
     # nn.optimizer = SGD(learning_rate=0.0005) # vanillia SGD
     # nn.optimizer = Adam(learning_rate=0.0003, decay=1e-3)
@@ -46,7 +46,7 @@ def main():
     precision = calculate_precision(y_pred, y_true)
     f1 = calculate_f1(y_pred, y_true)
     print("*"*21)
-    print(f"Train Loss: {history['train_loss'][-1]:.5f}")
+    print(f"Log Loss: {history['train_loss'][-1]:.5f}")
     print(f"Test Accuracy: {test_accuracy:.2f}")
     print(f"Precision: {precision:.2f}")
     print(f"Recall: {recall:.2f}")

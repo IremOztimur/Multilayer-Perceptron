@@ -31,12 +31,26 @@ class LossCategoricalCrossEntropy(Loss):
 
 class LossBinaryCrossEntropy(Loss):
     def forward(self, y_pred, y_true):
+        if y_true.shape[1] > 1:
+            y_true = np.argmax(y_true, axis=1)
+
+        if y_pred.shape[1] > 1:
+            y_pred = y_pred[:, 1]
+        
+        # Clip predictions to prevent log(0)
         y_pred_clipped = np.clip(y_pred, 1e-7, 1 - 1e-7)
+
         sample_losses = -(y_true * np.log(y_pred_clipped) + (1 - y_true) * np.log(1 - y_pred_clipped))
 
-        return np.mean(sample_losses, axis=1)
+        return np.mean(sample_losses)
     
     def backward(self, output, y_true):
+        if y_true.shape[1] > 1:
+            y_true = np.argmax(y_true, axis=1)
+
+        if output.shape[1] > 1:
+            output = output[:, 1]
+        
         output_clipped = np.clip(output, 1e-7, 1 - 1e-7)
 
         self.dinputs = -(y_true / output_clipped - (1 - y_true) / (1 - output_clipped))

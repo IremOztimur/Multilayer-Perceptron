@@ -34,7 +34,7 @@ def main():
     X_valid, y_valid = load_data(args.valid)
 
 
-    nn = NeuralNetwork(loss_function=LossCategoricalCrossEntropy())
+    nn = NeuralNetwork(loss_function=LossBinaryCrossEntropy())
     nn.optimizer = SGD(learning_rate=args.learning_rate, momentum=0.9, decay=1e-4)
     # nn.optimizer = Adam(learning_rate=args.learning_rate, decay=1e-3)
     nn.add(Dense(n_inputs=X_train.shape[1], n_neurons=16, activation=ReLU(), initializer='He'))
@@ -53,7 +53,7 @@ def main():
     model_path = f"depo/{args.model_name}.npy"
     nn.save_model(model_path)
 
-    print(f"Train Loss: {history['train_loss'][-1]:.4f}")
+    print(f"Log Loss: {history['train_loss'][-1]:.4f}")
     
     plot_metrics(history)
 
