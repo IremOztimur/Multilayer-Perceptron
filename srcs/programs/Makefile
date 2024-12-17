@@ -20,7 +20,7 @@ create:
 
 virtual:
 	@if [ ! -d "myenv" ]; then \
-		python3.11 -m venv myenv && \
+		python3.10 -m venv myenv && \
 		. myenv/bin/activate && pip install -r ../../requirements.txt && \
 		echo "\033[92mCreated virtual environment.\033[0m"; \
 	else \
